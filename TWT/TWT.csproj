@@ -76,5 +76,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Business Layer\" />
+    <Folder Include="Data Layer\" />
+    <Folder Include="Presentation Layer\" />
+    <Folder Include="Service Layer\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
