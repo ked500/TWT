@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business Layer\Tweet.cs" />
     <Compile Include="Presentation Layer\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,6 +64,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Data Layer\Data Files\sentiments.csv" />
+    <None Include="Data Layer\Data Files\states.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -76,10 +79,17 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Business Layer\" />
-    <Folder Include="Data Layer\" />
-    <Folder Include="Service Layer\" />
+    <Content Include="Data Layer\Data Files\cali_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\family_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\football_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\high_school_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\movie_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\shopping_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\snow_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\texas_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\weekend_tweets2014.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
