@@ -28,7 +28,7 @@ namespace TWT.Business_Layer.Models
 
             try
             {
-                this.Polygons.Add(Polygon);
+                Polygons.Add(Polygon);
                 return true;
             }
             catch
