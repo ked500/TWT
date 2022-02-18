@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TWT.Business_Layer
+namespace TWT.Business_Layer.Models
 {
     public class Tweet
     {
