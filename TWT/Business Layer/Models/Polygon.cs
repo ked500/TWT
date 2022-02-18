@@ -25,7 +25,7 @@ namespace TWT.Business_Layer.Models
         {
             try
             {
-                this.Vertexes.Add(new Tuple<double, double>(x, y));
+                Vertexes.Add(new Tuple<double, double>(x, y));
                 return true;
             }
             catch
