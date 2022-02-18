@@ -47,7 +47,7 @@ namespace TWT.Business_Layer
         {
             this.Message = Message;
             this.DateTime = DateTime;
-            this.Coordinates = new Tuple<double, double>(XCord, YCord);
+            Coordinates = new Tuple<double, double>(XCord, YCord);
 
         }
 
