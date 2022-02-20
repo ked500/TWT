@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TWT.Business_Layer
+namespace TWT.Business_Layer.Models
 {
     public class Tweet
     {
@@ -43,11 +43,11 @@ namespace TWT.Business_Layer
 
         }
 
-        public Tweet(string Message, DateTime DateTime, double XCord, double YCord)
+        public Tweet(string XCord, string YCord, string DateTime, string Message)
         {
             this.Message = Message;
-            this.DateTime = DateTime;
-            Coordinates = new Tuple<double, double>(XCord, YCord);
+            this.DateTime = Convert.ToDateTime(DateTime);
+            Coordinates = new Tuple<double, double>(Convert.ToDouble(XCord.Trim()), Convert.ToDouble(YCord.Trim()));
 
         }
 
