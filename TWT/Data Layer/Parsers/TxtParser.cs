@@ -29,10 +29,10 @@ namespace TWT.Data_Layer.Parsers
 
             if (sentences.Length < 3)
                 return null;
-            else
-                return new Tweet(sentences[0].Trim('[',']'), sentences[2], sentences[3]);
-            //THINK ABOUT THIS TROUBLE ^
-            //                         |
+            else {
+                string[] coordinates = sentences[0].Trim('[',']').Split(','); 
+                return new Tweet(coordinates[0], coordinates[1], sentences[2], sentences[3]);
+            }
         }
     }
 }
