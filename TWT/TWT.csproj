@@ -51,7 +51,7 @@
     <Compile Include="Business Layer\Models\Tweet.cs" />
     <Compile Include="Presentation Layer\MainForm.cs">
     <Compile Include="Data Layer\Parsers\TxtParser.cs" />
-    <Compile Include="Presentation Layer\Form1.cs">
+    <Compile Include="Presentation Layer\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Presentation Layer\MainForm.Designer.cs">
