@@ -49,15 +49,19 @@
     <Compile Include="Business Layer\Models\Polygon.cs" />
     <Compile Include="Business Layer\Models\State.cs" />
     <Compile Include="Business Layer\Models\Tweet.cs" />
+    <Compile Include="Presentation Layer\MainForm.cs" />
     <Compile Include="Data Layer\Parsers\TxtParser.cs" />
-    <Compile Include="Presentation Layer\Form1.cs">
+    <Compile Include="Presentation Layer\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Presentation Layer\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Presentation Layer\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Presentation Layer\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
