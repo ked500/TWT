@@ -36,7 +36,7 @@ namespace TWT.Data_Layer.Parsers
         private static State ReadState(JToken jsonState)
         {
             State state = new State();
-            if (jsonState.Values().Values().Values().Values().Any())
+            if (jsonState.Children().Children().Children().Children().Any())
             {
                 foreach (var jsonPolygons in jsonState)
                 {
@@ -63,16 +63,16 @@ namespace TWT.Data_Layer.Parsers
         private static Polygon ReadPolygon(JToken jsonPolygon)
         {
             Polygon polygon = new Polygon();
-            //
+            
 
-                foreach (var pair in jsonPolygon)
-                {
-                    double x = Double.Parse(pair.First.ToString());
-                    double y = Double.Parse(pair.Last.ToString());
+            foreach (var pair in jsonPolygon)
+            {
+                double x = Double.Parse(pair.First.ToString());
+                double y = Double.Parse(pair.Last.ToString());
 
-                    polygon.AddVertex(x, y);
+                polygon.AddVertex(x, y);
 
-                }
+            }
 
 
             
