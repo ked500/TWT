@@ -49,7 +49,6 @@
     <Compile Include="Business Layer\Models\Polygon.cs" />
     <Compile Include="Business Layer\Models\State.cs" />
     <Compile Include="Business Layer\Models\Tweet.cs" />
-    <Compile Include="Presentation Layer\MainForm.cs" />
     <Compile Include="Data Layer\Parsers\TxtParser.cs" />
     <Compile Include="Presentation Layer\MainForm.cs">
       <SubType>Form</SubType>
