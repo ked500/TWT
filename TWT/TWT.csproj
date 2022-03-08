@@ -53,6 +53,7 @@
     <Compile Include="Business Layer\Models\State.cs" />
     <Compile Include="Business Layer\Models\Tweet.cs" />
     <Compile Include="Data Layer\Parsers\JsonParser.cs" />
+    <Compile Include="Data Layer\Parsers\SentimentsParser.cs" />
     <Compile Include="Data Layer\Parsers\TxtParser.cs" />
     <Compile Include="Presentation Layer\MainForm.cs">
       <SubType>Form</SubType>
