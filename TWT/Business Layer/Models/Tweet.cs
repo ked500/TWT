@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace TWT.Business_Layer.Models
 {
+    //ALL PROPERTIES MUST BE FILLED
     public class Tweet
     {
         private List<string> words = new List<string>();
@@ -60,6 +61,7 @@ namespace TWT.Business_Layer.Models
 
 
         //SETTING EMOTIONALITY
+        //MUST BE CALLED FOR EVERY TWEET AFTER PARSING THE FILES (IN THE DB)
         public void Analyse(Dictionary<string, double> words)
         {
             this.Emotionality = 0;
