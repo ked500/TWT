@@ -11,7 +11,7 @@ namespace TWT.Business_Layer.Models
         private string message;
         private Tuple<double, double> coordinates;
         private DateTime dateTime = new DateTime();
-        private double emotionality;
+        private double emotionality = double.NaN;
 
 
         public string Message 
@@ -51,6 +51,21 @@ namespace TWT.Business_Layer.Models
 
         }
 
+
+        public void Analyse(Dictionary<string, double> words)
+        {
+            this.Emotionality = 0;
+
+            foreach (var word in words)
+            {
+                if (this.Message.Contains(word.Key))
+                {
+                    this.Emotionality += word.Value;
+                }
+
+            }
+
+        }
 
     }
 }
