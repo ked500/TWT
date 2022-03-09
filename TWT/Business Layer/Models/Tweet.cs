@@ -50,7 +50,7 @@ namespace TWT.Business_Layer.Models
                 string[] words = phrase.Split(' ');
                 foreach (var word in words)
                 {
-                    if(word!= "" && !word.Contains("http"))this.Words.Add(word.Trim().ToLower());
+                    if(word!= "")this.Words.Add(word.Trim().ToLower());
                 }
             }
             this.DateTime = Convert.ToDateTime(DateTime);
