@@ -17,24 +17,24 @@ namespace TWT.Business_Layer.Models
         public string Message 
         { 
             get { return message; }
-            set { message = value; } 
+            private set { message = value; } 
         }
         public Tuple<double, double> Coordinates
         {
             get { return coordinates; }
-            set { coordinates = value; }
+            private set { coordinates = value; }
         }
 
         public DateTime DateTime
         {
             get { return dateTime; }
-            set { dateTime = value; }
+            private set { dateTime = value; }
         }
 
         public double Emotionality
         {
             get { return emotionality; }
-            set { emotionality = value; }
+            private set { emotionality = value; }
         }
 
         public Tweet()
@@ -52,6 +52,7 @@ namespace TWT.Business_Layer.Models
         }
 
 
+        //SETTING EMOTIONALITY
         public void Analyse(Dictionary<string, double> words)
         {
             this.Emotionality = 0;
