@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TWT.Business_Layer.Models
 {
     public class Tweet
     {
-        private string message;
+        private List<string> words = new List<string>();
         private Tuple<double, double> coordinates;
         private DateTime dateTime = new DateTime();
         private double emotionality = double.NaN;
 
 
-        public string Message 
+        public List<string> Words 
         { 
-            get { return message; }
-            private set { message = value; } 
+            get { return words; }
+            private set { words = value; } 
         }
         public Tuple<double, double> Coordinates
         {
@@ -41,7 +42,17 @@ namespace TWT.Business_Layer.Models
 
         public Tweet(string XCord, string YCord, string DateTime, string Message)
         {
-            this.Message = Message;
+            Message = Regex.Replace(Message, @"(http:\/\/\S+\/\w+)|([@#]\w+)", "");
+                
+            string[] phrases = Message.Split(',', '.', '?', '!', ':', ';', '"', '=', '+', '(', ')');
+            foreach (var phrase in phrases)
+            {
+                string[] words = phrase.Split(' ');
+                foreach (var word in words)
+                {
+                    if(word!= "" && !word.Contains("http"))this.Words.Add(word.Trim().ToLower());
+                }
+            }
             this.DateTime = Convert.ToDateTime(DateTime);
             Coordinates = new Tuple<double, double>(Convert.ToDouble(XCord.Trim()), Convert.ToDouble(YCord.Trim()));
 
@@ -52,10 +63,10 @@ namespace TWT.Business_Layer.Models
         public void Analyse(Dictionary<string, double> words)
         {
             this.Emotionality = 0;
-
+            
             foreach (var word in words)
             {
-                if (this.Message.Contains(word.Key))
+                if (this.Words.Contains(word.Key))
                 {
                     this.Emotionality += word.Value;
                 }
