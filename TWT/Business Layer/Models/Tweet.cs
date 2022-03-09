@@ -37,11 +37,7 @@ namespace TWT.Business_Layer.Models
             private set { emotionality = value; }
         }
 
-        public Tweet()
-        {
-
-
-        }
+        
 
         public Tweet(string XCord, string YCord, string DateTime, string Message)
         {
