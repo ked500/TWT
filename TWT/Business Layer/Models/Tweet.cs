@@ -2,55 +2,80 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TWT.Business_Layer.Models
 {
+    //ALL PROPERTIES MUST BE FILLED
     public class Tweet
     {
-        private string message;
+        private List<string> words = new List<string>();
         private Tuple<double, double> coordinates;
         private DateTime dateTime = new DateTime();
-        private double emotionality;
+        private double emotionality = double.NaN;
 
 
-        public string Message 
+        public List<string> Words 
         { 
-            get { return message; }
-            set { message = value; } 
+            get { return words; }
+            private set { words = value; } 
         }
         public Tuple<double, double> Coordinates
         {
             get { return coordinates; }
-            set { coordinates = value; }
+            private set { coordinates = value; }
         }
 
         public DateTime DateTime
         {
             get { return dateTime; }
-            set { dateTime = value; }
+            private set { dateTime = value; }
         }
 
         public double Emotionality
         {
             get { return emotionality; }
-            set { emotionality = value; }
+            private set { emotionality = value; }
         }
 
-        public Tweet()
-        {
-
-
-        }
+        
 
         public Tweet(string XCord, string YCord, string DateTime, string Message)
         {
-            this.Message = Message;
+            Message = Regex.Replace(Message, @"(http:\/\/\S+\/?\w*)|([@#]\w+)", "");
+                
+            string[] phrases = Message.Split(',', '.', '?', '!', ':', ';', '"', '=', '+', '(', ')');
+            foreach (var phrase in phrases)
+            {
+                string[] words = phrase.Split(' ');
+                foreach (var word in words)
+                {
+                    if(word!= "")this.Words.Add(word.Trim().ToLower());
+                }
+            }
             this.DateTime = Convert.ToDateTime(DateTime);
             Coordinates = new Tuple<double, double>(Convert.ToDouble(XCord.Trim()), Convert.ToDouble(YCord.Trim()));
 
         }
 
+
+        //SETTING EMOTIONALITY
+        //MUST BE CALLED FOR EVERY TWEET AFTER PARSING THE FILES (IN THE DB)
+        public void Analyse(Dictionary<string, double> words)
+        {
+            this.Emotionality = 0;
+            
+            foreach (var word in words)
+            {
+                if (this.Words.Contains(word.Key))
+                {
+                    this.Emotionality += word.Value;
+                }
+
+            }
+
+        }
 
     }
 }
