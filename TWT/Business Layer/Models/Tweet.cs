@@ -43,7 +43,7 @@ namespace TWT.Business_Layer.Models
 
         public Tweet(string XCord, string YCord, string DateTime, string Message)
         {
-            Message = Regex.Replace(Message, @"(http:\/\/\S+\/\w+)|([@#]\w+)", "");
+            Message = Regex.Replace(Message, @"(http:\/\/\S+\/?\w*)|([@#]\w+)", "");
                 
             string[] phrases = Message.Split(',', '.', '?', '!', ':', ';', '"', '=', '+', '(', ')');
             foreach (var phrase in phrases)
