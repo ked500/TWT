@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,18 @@ namespace TWT.Business_Layer.Models
 
 
         private List<Polygon> polygons = new List<Polygon>();
-
+        
+        //TWEETS INSIDE THE STATE
+        private List<Tweet> tweets = new List<Tweet>();
         public List<Polygon> Polygons 
         { 
             get { return polygons; } 
+        }
+
+        public List<Tweet> Tweets
+        {
+            get { return tweets; }
+            set { tweets = value; }
         }
 
         public State()
@@ -23,6 +32,18 @@ namespace TWT.Business_Layer.Models
 
         }
 
+        public bool AddTweet(Tweet Tweet)
+        {
+            try
+            {
+                Tweets.Add(Tweet);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public bool AddPolygon(Polygon Polygon)
         {
 
