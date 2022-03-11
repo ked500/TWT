@@ -13,7 +13,7 @@ namespace TWT.Business_Layer.Models
         private List<string> words = new List<string>();
         private Tuple<double, double> coordinates;
         private DateTime dateTime = new DateTime();
-        private double emotionality = double.NaN;
+        private double? emotionality = null;
 
 
         public List<string> Words 
@@ -33,7 +33,7 @@ namespace TWT.Business_Layer.Models
             private set { dateTime = value; }
         }
 
-        public double Emotionality
+        public double? Emotionality
         {
             get { return emotionality; }
             private set { emotionality = value; }
@@ -64,13 +64,14 @@ namespace TWT.Business_Layer.Models
         //MUST BE CALLED FOR EVERY TWEET AFTER PARSING THE FILES (IN THE DB)
         public void Analyse(Dictionary<string, double> words)
         {
-            this.Emotionality = 0;
-            
+
             foreach (var word in words)
             {
                 if (this.Words.Contains(word.Key))
                 {
-                    this.Emotionality += word.Value;
+                    if (!Emotionality.HasValue) Emotionality = 0;
+                    
+                    Emotionality += word.Value;
                 }
 
             }
