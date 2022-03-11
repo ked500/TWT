@@ -25,11 +25,11 @@ namespace TWT.Business_Layer.Models
             get { return tweets; }
             set { tweets = value; }
         }
-        public double Emotionality
+        public double? Emotionality
         {
             get
             {
-                double emotionality = 0;
+                double? emotionality = 0;
                 foreach (var tweet in Tweets)
                 {
                     emotionality += tweet.Emotionality;
