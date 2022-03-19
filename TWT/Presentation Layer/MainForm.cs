@@ -15,6 +15,8 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.ToolTips;
 using GMap.NET.WindowsForms.Markers;
 
+using TWT.Data_Layer.Parsers;
+using TWT.Business_Layer.Models;
 
 namespace TWT
 {
@@ -34,7 +36,7 @@ namespace TWT
                 chooseFileList.Visible = true;
                 chooseFileList.Items.Clear();
                 Directory.GetFiles(@"..\..\Data Layer\Data Files", "*.txt").ToList().ForEach(x =>
-                chooseFileList.Items.Add(Path.GetFileName(x)));
+                chooseFileList.Items.Add(Path.GetFileNameWithoutExtension(x)));
             }
             else
             {
@@ -46,7 +48,7 @@ namespace TWT
         //File List
         private void ChooseFileLIstClick(object sender, MouseEventArgs e)
         {
-            string path = chooseFileList.SelectedItems[0].Text.ToString() + ".txt";       
+            string path = chooseFileList.SelectedItems[0].Text.ToString() + ".txt";          
         }
 
         private void ChooseFileListChangeIndex(object sender, EventArgs e)
@@ -54,17 +56,18 @@ namespace TWT
 
         }
 
-        //GMap
-        private void FormLoad(object sender, EventArgs e)
-        {
-            gMapControl.ShowCenter = false;
-        }
-
         //Emotional Panel
-
         private void emotionalPanelPaint(object sender, PaintEventArgs e)
         {
-          DrawPanel();
+         DrawPanel();
+        }
+
+        private void TestForStrings(string path)
+        {
+            //Delete in release
+            Graphics g = emotionalPanel.CreateGraphics();
+            g.Clear(Color.Green);
+            g.DrawString(path, new Font("HelvLight", 10), Brushes.White, (emotionalPanel.Width + 36) / 4, 0);
         }
 
         private void DrawPanel()
@@ -104,6 +107,80 @@ namespace TWT
               emotionalPanel.Visible = false;
             else
               emotionalPanel.Visible = true;
+        }
+
+        //GMap
+        private void FormLoad(object sender, EventArgs e)
+        {
+            gMapControl.ShowCenter = false;
+        }
+
+        private void gMapControlLoad(object sender, EventArgs e)
+        {
+            gMapControl.MapProvider = YandexMapProvider.Instance;
+            GMaps.Instance.Mode = AccessMode.ServerOnly;
+            gMapControl.Position = new PointLatLng(53.684875692724994, 23.840167167130677);
+            gMapControl.MinZoom = 2;
+            gMapControl.MaxZoom = 18;
+            gMapControl.Zoom = 4;
+        }
+
+        private void LoadMap(string path)
+        {
+            this.Refresh();
+            GMapOverlay polysOverlay = new GMapOverlay("polysOverlay");
+            //Txt parser call
+            //parsedTweets = (@"..\..\Data Layer\Data" + path);
+            //Get States
+            //StatesToDraw = GetStates();
+            var mapStates = JsonParser.ParseStates(@"..\..\Data Layer\Data Files\states.json");
+
+            gMapControl.MarkersEnabled = true;
+            gMapControl.PolygonsEnabled = true;
+
+            List<GMapPolygon> polygons = paintStates(mapStates);
+            foreach(var polygon in polygons)
+            {
+                polysOverlay.Polygons.Add(polygon);
+            }
+            gMapControl.Overlays.Add(polysOverlay);
+
+            RefreshMap();
+        }
+
+        private List<GMapPolygon> paintStates(Dictionary<string,State> states)
+        {
+            List<GMapPolygon> polygons = new List<GMapPolygon>();
+
+            foreach (var state in states.Values)
+            {
+                foreach (var polygons in state.Polygons)
+                {
+                    foreach (var polygon in polygons)
+                    {
+                        List<PointLatLng> points = new List<PointLatLng>();
+                        foreach (var point in polygon)
+                        {
+                            PointLatLng pnt = new PointLatLng(point.Latitude, point.Longtitude);
+                            points.Add(pnt);
+                        }
+                        GMapPolygon plgn = new GMapPolygon(points, state.Postcode);
+                        if (!float.IsNaN(state.Weight))
+                            plgn.Fill = new SolidBrush(Coloring.SetColors(item.Weight));
+                        else plgn.Fill = new SolidBrush(Color.Gray);
+                        plgn.Stroke = new Pen(Color.Black, 0.005F);
+                        polys.Add(plgn);
+                    }
+                }
+            }
+            return polygons;
+        }
+
+        private void RefreshMap()
+        {
+            double curZoom = gMapControl.Zoom;
+            gMapControl.Zoom += 0.001;
+            gMapControl.Zoom -= 0.001;
         }
     }
 }
