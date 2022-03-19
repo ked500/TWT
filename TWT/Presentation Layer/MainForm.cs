@@ -132,7 +132,6 @@ namespace TWT
             //Txt parser call
             //parsedTweets = (@"..\..\Data Layer\Data" + path);
             //Get States
-            //StatesToDraw = GetStates();
             var mapStates = JsonParser.ParseStates(@"..\..\Data Layer\Data Files\states.json");
 
             gMapControl.MarkersEnabled = true;
