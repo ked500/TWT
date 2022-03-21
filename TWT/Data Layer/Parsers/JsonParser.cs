@@ -13,9 +13,9 @@ namespace TWT.Data_Layer.Parsers
 {
     public class JsonParser
     {
+        static string path = @"..\..\Data Layer\Data Files\states.json";
 
-
-        public static List<State> ParseStates(string path)
+        public static List<State> ParseStates()
         {
 
             string jsonString = new StreamReader(path).ReadToEnd();

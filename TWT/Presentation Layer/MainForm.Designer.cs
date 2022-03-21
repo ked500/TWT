@@ -87,6 +87,7 @@ namespace TWT
             this.gMapControl.Size = new System.Drawing.Size(737, 540);
             this.gMapControl.TabIndex = 1;
             this.gMapControl.Zoom = 0D;
+            this.gMapControl.Load += new System.EventHandler(this.gMapControlLoad);
             // 
             // emotionalPanelShow
             // 
