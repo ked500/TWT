@@ -127,52 +127,12 @@ namespace TWT
 
         private void LoadMap(string path)
         {
-            this.Refresh();
-            GMapOverlay polysOverlay = new GMapOverlay("polysOverlay");
-            //Txt parser call
-            //parsedTweets = (@"..\..\Data Layer\Data" + path);
-            //Get States
-            var mapStates = JsonParser.ParseStates(@"..\..\Data Layer\Data Files\states.json");
-
-            gMapControl.MarkersEnabled = true;
-            gMapControl.PolygonsEnabled = true;
-
-            List<GMapPolygon> polygons = paintStates(mapStates);
-            foreach(var polygon in polygons)
-            {
-                polysOverlay.Polygons.Add(polygon);
-            }
-            gMapControl.Overlays.Add(polysOverlay);
-
-            RefreshMap();
+            
         }
 
         private List<GMapPolygon> paintStates(Dictionary<string,State> states)
         {
-            List<GMapPolygon> polygons = new List<GMapPolygon>();
-
-            foreach (var state in states.Values)
-            {
-                foreach (var polygons in state.Polygons)
-                {
-                    foreach (var polygon in polygons)
-                    {
-                        List<PointLatLng> points = new List<PointLatLng>();
-                        foreach (var point in polygon)
-                        {
-                            PointLatLng pnt = new PointLatLng(point.Latitude, point.Longtitude);
-                            points.Add(pnt);
-                        }
-                        GMapPolygon plgn = new GMapPolygon(points, state.Postcode);
-                        if (!float.IsNaN(state.Weight))
-                            plgn.Fill = new SolidBrush(Coloring.SetColors(item.Weight));
-                        else plgn.Fill = new SolidBrush(Color.Gray);
-                        plgn.Stroke = new Pen(Color.Black, 0.005F);
-                        polys.Add(plgn);
-                    }
-                }
-            }
-            return polygons;
+           
         }
 
         private void RefreshMap()
