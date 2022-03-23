@@ -17,18 +17,16 @@ namespace TWT.Data_Layer
             List<GMapPolygon> polygons = new List<GMapPolygon>();
             foreach (var state in states)
             {
-                foreach (var _polygons in state.Polygons)
+                foreach (var polygon in state.Polygons)
                 {
-                    foreach (Polygon polygon in _polygons)
-                    {
                         List<PointLatLng> vertexes = new List<PointLatLng>();
                         foreach (var vertex in polygon.Vertexes)
                         {
-                            PointLatLng vert = new PointLatLng(vertex.Item1, vertex.Item2);
+                            PointLatLng vert = new PointLatLng(vertex.Item2, vertex.Item1);
                             vertexes.Add(vert);
                         }
-                        GMapPolygon pol = new GMapPolygon(vertexes, "");
-                    }
+                        GMapPolygon pol = new GMapPolygon(vertexes, state.Postcode);
+                    polygons.Add(pol);
                 }
             }
             return polygons;
