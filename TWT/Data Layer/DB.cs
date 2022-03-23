@@ -26,7 +26,7 @@ namespace TWT.Data_Layer
                             vertexes.Add(vert);
                         }
                        // GMapPolygon pol = new GMapPolygon(vertexes, state.Postcode);
-                   // polygons.Add(pol);
+                   polygons.Add(pol);
                 }
             }
             return polygons;
