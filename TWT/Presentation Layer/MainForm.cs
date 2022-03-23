@@ -122,7 +122,7 @@ namespace TWT
             GMaps.Instance.Mode = AccessMode.ServerOnly;
             gMapControl.Position = new PointLatLng(40.280177245114054, -97.83735244087555);
             gMapControl.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.ViewCenter;
-            gMapControl.MinZoom = 2;
+            gMapControl.MinZoom = 3;
             gMapControl.MaxZoom = 18;
             gMapControl.Zoom = 3;
             gMapControl.CanDragMap = true;
@@ -135,7 +135,8 @@ namespace TWT
             Graphics g = gMapControl.CreateGraphics();
             GMapOverlay polygonOverlay = new GMapOverlay("polygonOverlay");
             gMapControl.PolygonsEnabled = true;
-            List<GMapPolygon> polygons = DB.GetPolygons(JsonParser.ParseStates());
+            //List<GMapPolygon> polygons = DB.GetPolygons();
+            List<GMapPolygon> polygons = DB.GetPaintedStates();
             foreach (var polygon in polygons)
             {            
                 polygonOverlay.Polygons.Add(polygon);
