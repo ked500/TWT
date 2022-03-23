@@ -85,7 +85,7 @@ namespace TWT
             float min = -1.5f, step = 0.5f;
             float currentValue = min;
             //String Above panel
-            g.DrawString("Емоциональный вес", new Font("HelvLight", 10), Brushes.White, (emotionalPanel.Width + 36) / 4, 0);
+            g.DrawString("Эмоциональный вес", new Font("HelvLight", 10), Brushes.White, (emotionalPanel.Width + 36) / 4, 0);
             for (int i = 0; i < grids; i++)
             {
                 rect[i] = new Rectangle(widthofRec * i, 30, widthofRec, 20);
