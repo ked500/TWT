@@ -56,7 +56,12 @@ namespace TWT.Data_Layer
 
         private static void ParseTweet(string path)
         {
+            ParseSentiments();
             tweets = TxtParser.ParseTweets(path);
+            foreach (var item in tweets)
+            {
+                item.Analyse(wordValues);
+            }
         }
 
         //@"..\..\Data Layer\Data Files\cali_tweets2014.txt"
@@ -74,10 +79,9 @@ namespace TWT.Data_Layer
         static private void countStates()
         {
             ParseStates();
-            Dictionary<string, State> newStates = ConvertStates();
-            ParseSentiments();
+            Dictionary<string, State> newStates = ConvertStates();         
             ParseTweet(@"..\..\Data Layer\Data Files\cali_tweets2014.txt");
-            List<State> statesToColor = new List<State>();
+            List<State> statesToColor = states;
             foreach (var tweet in tweets)
             {
                 State state = AnalyseStates(statesToColor, tweet);
