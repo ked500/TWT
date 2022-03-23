@@ -32,11 +32,11 @@ namespace TWT.Business_Layer.Models
             get { return postcode; }
             set { postcode = value; }
         }
-        public double? Emotionality
+        public double Emotionality
         {
             get
             {
-                double? emotionality = 0;
+                double emotionality = 0;
                 foreach (var tweet in Tweets)
                 {
                     emotionality += tweet.Emotionality;
