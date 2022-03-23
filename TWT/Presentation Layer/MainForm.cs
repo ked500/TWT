@@ -85,7 +85,7 @@ namespace TWT
             float min = -1.5f, step = 0.5f;
             float currentValue = min;
             //String Above panel
-            g.DrawString("Эмоциональный вес", new Font("HelvLight", 10), Brushes.White, (emotionalPanel.Width + 36) / 4, 0);
+            g.DrawString("Эмоциональный вес", new Font("HelvLight", 10), Brushes.Black, (emotionalPanel.Width + 36) / 4, 0);
             for (int i = 0; i < grids; i++)
             {
                 rect[i] = new Rectangle(widthofRec * i, 30, widthofRec, 20);
@@ -95,10 +95,10 @@ namespace TWT
                 currentValue += step;
                 g.FillRectangle(brush[i], rect[i]);
                 g.DrawRectangle(pen, rect[i]);
-                g.DrawString(Convert.ToString(currentValue - step), new Font("Arial", 8), Brushes.White, (widthofRec - 2) * i, 18);
+                g.DrawString(Convert.ToString(currentValue - step), new Font("Arial", 8), Brushes.Black, (widthofRec - 2) * i, 18);
             }
             //String for last grid
-            g.DrawString(Convert.ToString(currentValue) + "+", new Font("Arial", 8), Brushes.White, (widthofRec - 3) * grids, 18);
+            g.DrawString(Convert.ToString(currentValue) + "+", new Font("Arial", 8), Brushes.Black, (widthofRec - 3) * grids, 18);
         }
 
         private void emotionalPanelShow_CheckedChanged(object sender, EventArgs e)
@@ -120,55 +120,33 @@ namespace TWT
         {
             gMapControl.MapProvider = YandexMapProvider.Instance;
             GMaps.Instance.Mode = AccessMode.ServerOnly;
-            gMapControl.Position = new PointLatLng(53.684875692724994, 23.840167167130677);
+            gMapControl.Position = new PointLatLng(40.280177245114054, -97.83735244087555);
             gMapControl.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.ViewCenter;
             gMapControl.MinZoom = 2;
             gMapControl.MaxZoom = 18;
-            gMapControl.Zoom = 4;
+            gMapControl.Zoom = 3;
             gMapControl.CanDragMap = true;
             gMapControl.DragButton = MouseButtons.Left;
-            LoadMap("");
+            LoadMap();
         }
 
-        private void LoadMap(string path)
+        private void LoadMap()
         {
+            Graphics g = gMapControl.CreateGraphics();
             GMapOverlay polygonOverlay = new GMapOverlay("polygonOverlay");
             gMapControl.PolygonsEnabled = true;
-            List<GMapPolygon> polygons = DB.GetStates(JsonParser.ParseStates());
+            List<GMapPolygon> polygons = DB.GetPolygons(JsonParser.ParseStates());
             foreach (var polygon in polygons)
-            {
+            {            
                 polygonOverlay.Polygons.Add(polygon);
             }
             gMapControl.Overlays.Add(polygonOverlay);
         }
 
-        //private List<GMapPolygon> paintStates(Dictionary<string, State> states)
-        //{
-        //    List<GMapPolygon> polygons = new List<GMapPolygon>();
-
-        //    foreach (var state in states.Values)
-        //    {
-        //        foreach (var polygons in state.Polygons)
-        //        {
-        //            foreach (var polygon in polygons)
-        //            {
-        //                List<PointLatLng> points = new List<PointLatLng>();
-        //                foreach (var point in polygon)
-        //                {
-        //                    PointLatLng pnt = new PointLatLng(point.Latitude, point.Longtitude);
-        //                    points.Add(pnt);
-        //                }
-        //                GMapPolygon plgn = new GMapPolygon(points, state.Postcode);
-        //                if (!float.IsNaN(state.Weight))
-        //                    plgn.Fill = new SolidBrush(Coloring.SetColors(item.Weight));
-        //                else plgn.Fill = new SolidBrush(Color.Gray);
-        //                plgn.Stroke = new Pen(Color.Black, 0.005F);
-        //                polys.Add(plgn);
-        //            }
-        //        }
-        //    }
-        //    return polygons;
-        //}
+        private void paintMap()
+        {
+           
+        }
 
         private void RefreshMap()
         {
