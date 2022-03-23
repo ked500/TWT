@@ -27,6 +27,7 @@ namespace TWT.Data_Layer.Parsers
             {
 
                 State state = ReadState(jsonState.Value);
+                state.Postcode = jsonState.Key;
                 states.Add(state);
                 
             }
