@@ -82,8 +82,38 @@ namespace TWT.Business_Layer.Models
         }
 
         //TEST ONLY
+
+        private void SetMaxValues()
+        {
+            foreach (var polygon in polygons)
+            {
+                foreach (var vetrex in polygon.Vertexes)
+                {
+                    double x = vetrex.Longtitude;
+                    double y = vetrex.Latitude;
+                    if (x > max_long)
+                    {
+                        max_long = x;
+                    }
+                    if (x < min_long)
+                    {
+                        min_long = x;
+                    }
+
+                    if (y > max_lat)
+                    {
+                        max_lat = y;
+                    }
+                    if (y < min_lat)
+                    {
+                        min_lat = y;
+                    }
+                }
+            }
+        }
         public bool isInside(Coordinates p, List<Coordinates> polygonVertexes)
         {
+            SetMaxValues();
             if (p.Latitude > max_long || p.Latitude < min_long || p.Longtitude > max_lat || p.Longtitude < min_lat)
             {
                 return false;
