@@ -117,12 +117,14 @@ namespace TWT
 
         private void gMapControlLoad(object sender, EventArgs e)
         {
-            gMapControl.MapProvider = YandexMapProvider.Instance;
+            gMapControl.MapProvider = GoogleMapProvider.Instance;
             GMaps.Instance.Mode = AccessMode.ServerOnly;
-            gMapControl.Position = new PointLatLng(53.684875692724994, 23.840167167130677);
+            gMapControl.Position = new PointLatLng(49.000239, -117.033359);
             gMapControl.MinZoom = 2;
             gMapControl.MaxZoom = 18;
             gMapControl.Zoom = 4;
+            gMapControl.CanDragMap = true;
+            gMapControl.DragButton = MouseButtons.Left;
         }
 
         private void LoadMap(string path)
@@ -132,7 +134,7 @@ namespace TWT
 
         private List<GMapPolygon> paintStates(Dictionary<string,State> states)
         {
-           
+            return null;  
         }
 
         private void RefreshMap()
