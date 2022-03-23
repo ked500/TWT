@@ -5,11 +5,11 @@ namespace TWT
 {
     public static class Coloring
     {
-        public static Color SetColors(float value)
+        public static Color SetColors(double value)
         {
             int red = 255, green = 255, blue = 255;
 
-            if (float.IsNaN(value))
+            if (double.IsNaN(value))
                 return Color.Gray;
             if(value > 0)
             {   //0 to 0.5
