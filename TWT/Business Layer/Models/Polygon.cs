@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections;
 
 namespace TWT.Business_Layer.Models
 {
@@ -11,6 +10,7 @@ namespace TWT.Business_Layer.Models
     {
         private List<Coordinates> vertexes  = new List<Coordinates>();
         public List<Coordinates> Vertexes 
+          
         { 
             get { return vertexes; } 
         }

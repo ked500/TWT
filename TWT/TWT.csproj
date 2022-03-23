@@ -88,7 +88,6 @@
     <Compile Include="Data Layer\Parsers\JsonParser.cs" />
     <Compile Include="Data Layer\Parsers\SentimentsParser.cs" />
     <Compile Include="Data Layer\Parsers\TxtParser.cs" />
-    <Compile Include="Presentation Layer\Coloring.cs" />
     <Compile Include="Presentation Layer\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

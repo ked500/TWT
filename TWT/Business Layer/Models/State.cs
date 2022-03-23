@@ -15,6 +15,7 @@ namespace TWT.Business_Layer.Models
         
         //TWEETS INSIDE THE STATE
         private List<Tweet> tweets = new List<Tweet>();
+        private string postcode;
         public List<Polygon> Polygons 
         { 
             get { return polygons; } 
@@ -25,11 +26,17 @@ namespace TWT.Business_Layer.Models
             get { return tweets; }
             set { tweets = value; }
         }
-        public double? Emotionality
+
+        public string Postcode
+        {
+            get { return postcode; }
+            set { postcode = value; }
+        }
+        public double Emotionality
         {
             get
             {
-                double? emotionality = 0;
+                double emotionality = 0;
                 foreach (var tweet in Tweets)
                 {
                     emotionality += tweet.Emotionality;
