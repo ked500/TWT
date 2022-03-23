@@ -89,11 +89,11 @@ namespace TWT
             for (int i = 0; i < grids; i++)
             {
                 rect[i] = new Rectangle(widthofRec * i, 30, widthofRec, 20);
-                brush[i] = new LinearGradientBrush(rect[i],
-                    Coloring.SetColors(currentValue + 0.0001f),
-                    Coloring.SetColors(currentValue + step - 0.0001f), 0f);
+                 //brush[i] = new LinearGradientBrush(rect[i],
+                 // Coloring.SetColors(currentValue + 0.0001f),
+                 //Coloring.SetColors(currentValue + step - 0.0001f), 0f);
                 currentValue += step;
-                g.FillRectangle(brush[i], rect[i]);
+                //g.FillRectangle(brush[i], rect[i]);
                 g.DrawRectangle(pen, rect[i]);
                 g.DrawString(Convert.ToString(currentValue - step), new Font("Arial", 8), Brushes.White, (widthofRec - 2) * i, 18);
             }

@@ -25,8 +25,8 @@ namespace TWT.Data_Layer
                             PointLatLng vert = new PointLatLng(vertex.Item2, vertex.Item1);
                             vertexes.Add(vert);
                         }
-                        GMapPolygon pol = new GMapPolygon(vertexes, state.Postcode);
-                    polygons.Add(pol);
+                       // GMapPolygon pol = new GMapPolygon(vertexes, state.Postcode);
+                   // polygons.Add(pol);
                 }
             }
             return polygons;
