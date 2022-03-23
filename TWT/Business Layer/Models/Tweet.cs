@@ -11,7 +11,7 @@ namespace TWT.Business_Layer.Models
     public class Tweet
     {
         private List<string> words = new List<string>();
-        private Tuple<double, double> coordinates;
+        private Coordinates coordinates;
         private DateTime dateTime = new DateTime();
         private double? emotionality = null;
 
@@ -21,7 +21,7 @@ namespace TWT.Business_Layer.Models
             get { return words; }
             private set { words = value; } 
         }
-        public Tuple<double, double> Coordinates
+        public Coordinates Coordinates
         {
             get { return coordinates; }
             private set { coordinates = value; }
@@ -55,7 +55,7 @@ namespace TWT.Business_Layer.Models
                 }
             }
             this.DateTime = Convert.ToDateTime(DateTime);
-            Coordinates = new Tuple<double, double>(Convert.ToDouble(XCord.Trim()), Convert.ToDouble(YCord.Trim()));
+            this.Coordinates = new Coordinates(Convert.ToDouble(XCord.Trim()), Convert.ToDouble(YCord.Trim()));
 
         }
 
