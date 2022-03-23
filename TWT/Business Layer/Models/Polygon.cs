@@ -9,11 +9,6 @@ namespace TWT.Business_Layer.Models
 {
     public class Polygon
     {
-        public IEnumerator GetEnumerator()
-        {
-            return (IEnumerator)this;
-        }
-
         private List<Tuple<double, double>> vertexes  = new List<Tuple<double, double>>();
         public List<Tuple<double, double>> Vertexes 
         { 
