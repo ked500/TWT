@@ -55,7 +55,7 @@ namespace TWT
             this.chooseFileList.Location = new System.Drawing.Point(2, 68);
             this.chooseFileList.MultiSelect = false;
             this.chooseFileList.Name = "chooseFileList";
-            this.chooseFileList.Size = new System.Drawing.Size(159, 212);
+            this.chooseFileList.Size = new System.Drawing.Size(138, 212);
             this.chooseFileList.TabIndex = 1;
             this.chooseFileList.UseCompatibleStateImageBehavior = false;
             this.chooseFileList.View = System.Windows.Forms.View.List;
