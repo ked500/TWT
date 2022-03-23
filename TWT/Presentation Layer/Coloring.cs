@@ -11,9 +11,9 @@ namespace TWT
 
             if (double.IsNaN(value))
                 return Color.Gray;
-            if(value > 0)
+            if (value > 0)
             {   //0 to 0.5
-                if(value < 0.5)
+                if (value < 0.5)
                 {
                     red = 255;
                     green = 255;
@@ -27,7 +27,7 @@ namespace TWT
                     green = Convert.ToInt32(255 - 255 * (value - 0.5f));
                 }
             }
-            else if(value < 0)
+            else if (value < 0)
             {
                 //0 to -0.5
                 if (value > -0.5)

@@ -89,11 +89,11 @@ namespace TWT
             for (int i = 0; i < grids; i++)
             {
                 rect[i] = new Rectangle(widthofRec * i, 30, widthofRec, 20);
-                 //brush[i] = new LinearGradientBrush(rect[i],
-                 // Coloring.SetColors(currentValue + 0.0001f),
-                 //Coloring.SetColors(currentValue + step - 0.0001f), 0f);
+                brush[i] = new LinearGradientBrush(rect[i],
+                Coloring.SetColors(currentValue + 0.0001f),
+                Coloring.SetColors(currentValue + step - 0.0001f), 0f);
                 currentValue += step;
-                //g.FillRectangle(brush[i], rect[i]);
+                g.FillRectangle(brush[i], rect[i]);
                 g.DrawRectangle(pen, rect[i]);
                 g.DrawString(Convert.ToString(currentValue - step), new Font("Arial", 8), Brushes.White, (widthofRec - 2) * i, 18);
             }
@@ -142,33 +142,33 @@ namespace TWT
             gMapControl.Overlays.Add(polygonOverlay);
         }
 
-        private List<GMapPolygon> paintStates(Dictionary<string, State> states)
-        {
-            List<GMapPolygon> polygons = new List<GMapPolygon>();
+        //private List<GMapPolygon> paintStates(Dictionary<string, State> states)
+        //{
+        //    List<GMapPolygon> polygons = new List<GMapPolygon>();
 
-            //foreach (var state in states.Values)
-            //{
-            //    foreach (var polygons in state.Polygons)
-            //    {
-            //        foreach (var polygon in polygons)
-            //        {
-            //            List<PointLatLng> points = new List<PointLatLng>();
-            //            foreach (var point in polygon)
-            //            {
-            //                PointLatLng pnt = new PointLatLng(point.Latitude, point.Longtitude);
-            //                points.Add(pnt);
-            //            }
-            //            GMapPolygon plgn = new GMapPolygon(points, state.Postcode);
-            //            if (!float.IsNaN(state.Weight))
-            //                plgn.Fill = new SolidBrush(Coloring.SetColors(item.Weight));
-            //            else plgn.Fill = new SolidBrush(Color.Gray);
-            //            plgn.Stroke = new Pen(Color.Black, 0.005F);
-            //            polys.Add(plgn);
-            //        }
-            //    }
-            //}
-            return polygons;
-        }
+        //    foreach (var state in states.Values)
+        //    {
+        //        foreach (var polygons in state.Polygons)
+        //        {
+        //            foreach (var polygon in polygons)
+        //            {
+        //                List<PointLatLng> points = new List<PointLatLng>();
+        //                foreach (var point in polygon)
+        //                {
+        //                    PointLatLng pnt = new PointLatLng(point.Latitude, point.Longtitude);
+        //                    points.Add(pnt);
+        //                }
+        //                GMapPolygon plgn = new GMapPolygon(points, state.Postcode);
+        //                if (!float.IsNaN(state.Weight))
+        //                    plgn.Fill = new SolidBrush(Coloring.SetColors(item.Weight));
+        //                else plgn.Fill = new SolidBrush(Color.Gray);
+        //                plgn.Stroke = new Pen(Color.Black, 0.005F);
+        //                polys.Add(plgn);
+        //            }
+        //        }
+        //    }
+        //    return polygons;
+        //}
 
         private void RefreshMap()
         {
