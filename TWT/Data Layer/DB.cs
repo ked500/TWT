@@ -22,7 +22,7 @@ namespace TWT.Data_Layer
                         List<PointLatLng> vertexes = new List<PointLatLng>();
                         foreach (var vertex in polygon.Vertexes)
                         {
-                            PointLatLng vert = new PointLatLng(vertex.Item2, vertex.Item1);
+                            PointLatLng vert = new PointLatLng(vertex.Latitude, vertex.Longtitude);
                             vertexes.Add(vert);
                         }
                        // GMapPolygon pol = new GMapPolygon(vertexes, state.Postcode);

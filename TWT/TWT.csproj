@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business Layer\Models\Coordinates.cs" />
     <Compile Include="Business Layer\Models\Polygon.cs" />
     <Compile Include="Business Layer\Models\State.cs" />
     <Compile Include="Business Layer\Models\Tweet.cs" />

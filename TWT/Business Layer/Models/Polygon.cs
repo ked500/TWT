@@ -8,9 +8,9 @@ namespace TWT.Business_Layer.Models
 {
     public class Polygon
     {
-
-        private List<Tuple<double, double>> vertexes  = new List<Tuple<double, double>>();
-        public List<Tuple<double, double>> Vertexes 
+        private List<Coordinates> vertexes  = new List<Coordinates>();
+        public List<Coordinates> Vertexes 
+          
         { 
             get { return vertexes; } 
         }
@@ -25,7 +25,7 @@ namespace TWT.Business_Layer.Models
         {
             try
             {
-                Vertexes.Add(new Tuple<double, double>(x, y));
+                Vertexes.Add(new Coordinates(x, y));
                 return true;
             }
             catch
