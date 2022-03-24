@@ -84,6 +84,7 @@ namespace TWT.Data_Layer
             List<State> statesToColor = states;
             foreach (var tweet in tweets)
             {
+               
                 State state = AnalyseStates(statesToColor, tweet);
                 if(!newStates.ContainsKey(state.Postcode))
                 {
@@ -137,7 +138,7 @@ namespace TWT.Data_Layer
                      if (!double.IsNaN(state.Emotionality))
                         pol.Fill = new SolidBrush(Coloring.SetColors(state.Emotionality));
                     else
-                        pol.Fill = new SolidBrush(Color.Red);
+                        pol.Fill = new SolidBrush(Color.Gray);
                     pol.Stroke = new Pen(Color.Black, 0.005f);
                     polygons.Add(pol);
                 }

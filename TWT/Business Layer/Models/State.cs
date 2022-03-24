@@ -111,6 +111,7 @@ namespace TWT.Business_Layer.Models
                 }
             }
         }
+        //REFACTORING
         public bool isInside(Coordinates p, List<Coordinates> polygonVertexes)
         {
             SetMaxValues();
