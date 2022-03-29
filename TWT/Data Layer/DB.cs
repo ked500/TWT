@@ -15,8 +15,8 @@ namespace TWT.Data_Layer
     internal class DB
     {
         static Dictionary<string, double> wordValues;
-        static List<State> states;
-        static List<Tweet> tweets;
+        public static List<State> states;
+        public static List<Tweet> tweets;
 
         static public List<GMapPolygon> GetPolygons()
         {         
