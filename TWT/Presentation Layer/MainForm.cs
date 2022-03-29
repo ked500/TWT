@@ -71,9 +71,11 @@ namespace TWT
             g.DrawString(path, new Font("HelvLight", 10), Brushes.White, (emotionalPanel.Width + 36) / 4, 0);
         }
 
+
         private void DrawPanel()
         {
             //Pen
+            
             Pen pen = new Pen(Color.Black, 0.002f);
             //Amount of grids
             int grids = 6;
@@ -130,6 +132,38 @@ namespace TWT
             LoadMap();
         }
 
+        private GMapOverlay paintTweets(List<State> states)
+        {
+            GMapOverlay tweets = new GMapOverlay("tweetPoints");
+            foreach (var state in DB.states)
+            {
+                if (state.Postcode == "UNKNOWN" || state.Tweets.Count == 0)
+                    continue;
+                foreach (var tweet in state.Tweets)
+                {
+                    Bitmap tweetPoint = new Bitmap(20, 20);
+
+                    using (Graphics g = Graphics.FromImage(tweetPoint))
+                    {
+                        Pen pen = new Pen(Color.Black, 2f);
+                        g.DrawEllipse(pen, 0, 0, 7f, 7f);
+                        //g.DrawString(tweet.Emotionality.ToString(),new Font("Tahoma", 10, FontStyle.Regular) , new SolidBrush(Color.Black), 0,0);
+                        g.FillEllipse(new SolidBrush(Coloring.SetColors(tweet.Emotionality)), 0, 0, 7f, 7f);
+                    }
+                    Coordinates c = tweet.Coordinates;
+                    PointLatLng point = new PointLatLng(tweet.Coordinates.Longtitude, tweet.Coordinates.Latitude);
+                    GMapMarker GPoint = new GMarkerGoogle(point, tweetPoint);
+                    GPoint.ToolTip = new GMapRoundedToolTip(GPoint);
+                    GPoint.ToolTipText = tweet.Emotionality.ToString();
+                    GPoint.IsHitTestVisible = true;
+                    GPoint.ToolTipMode = MarkerTooltipMode.Never;
+                    tweets.Markers.Add(GPoint);
+
+                }
+            }
+            return tweets;
+        }
+
         private void LoadMap()
         {
             Graphics g = gMapControl.CreateGraphics();
@@ -142,6 +176,7 @@ namespace TWT
                 polygonOverlay.Polygons.Add(polygon);
             }
             gMapControl.Overlays.Add(polygonOverlay);
+            gMapControl.Overlays.Add(this.paintTweets(DB.states));
         }
 
         private void paintMap()
