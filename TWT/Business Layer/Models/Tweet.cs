@@ -64,25 +64,28 @@ namespace TWT.Business_Layer.Models
         //MUST BE CALLED FOR EVERY TWEET AFTER PARSING THE FILES (IN THE DB)
         public void Analyse(Dictionary<string, double> sentimentsWords)
         {
-
-            foreach (var word in Words)
+            int count = 0;
+            for (int index =0; index < Words.Count; index++)
             {
-
+                for (int index1 = 0; index1 != index; index1++)
+                {
+                    string word = string.Empty;
+                    for (int index2 = index1; index2!= index; index2++)
+                    {
+                        word += Words[index2];
+                        if(index2 + 1 != index) word += ' ';
+                    }
                     if (sentimentsWords.ContainsKey(word))
+                    {
                         this.Emotionality += sentimentsWords[word];
-               
+                        count++;
+                    }
+                   
+                }
+
             }
-
-            //foreach (var word in words)
-            //{
-            //    if (this.Words.Contains(word.Key))
-            //    {
-            //        if (!Emotionality.HasValue) Emotionality = 0;
-                    
-            //        Emotionality += word.Value;
-            //    }
-
-            //}
+            if(count != 0)
+                this.Emotionality = Math.Round((this.Emotionality / count), 2);
 
         }
 
