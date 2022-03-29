@@ -71,9 +71,11 @@ namespace TWT
             g.DrawString(path, new Font("HelvLight", 10), Brushes.White, (emotionalPanel.Width + 36) / 4, 0);
         }
 
+
         private void DrawPanel()
         {
             //Pen
+            
             Pen pen = new Pen(Color.Black, 0.002f);
             //Amount of grids
             int grids = 6;
@@ -85,7 +87,7 @@ namespace TWT
             float min = -1.5f, step = 0.5f;
             float currentValue = min;
             //String Above panel
-            g.DrawString("Эмоциональный вес", new Font("HelvLight", 10), Brushes.White, (emotionalPanel.Width + 36) / 4, 0);
+            g.DrawString("Эмоциональный вес", new Font("HelvLight", 10), Brushes.Black, (emotionalPanel.Width + 36) / 4, 0);
             for (int i = 0; i < grids; i++)
             {
                 rect[i] = new Rectangle(widthofRec * i, 30, widthofRec, 20);
@@ -95,10 +97,10 @@ namespace TWT
                 currentValue += step;
                 g.FillRectangle(brush[i], rect[i]);
                 g.DrawRectangle(pen, rect[i]);
-                g.DrawString(Convert.ToString(currentValue - step), new Font("Arial", 8), Brushes.White, (widthofRec - 2) * i, 18);
+                g.DrawString(Convert.ToString(currentValue - step), new Font("Arial", 8), Brushes.Black, (widthofRec - 2) * i, 18);
             }
             //String for last grid
-            g.DrawString(Convert.ToString(currentValue) + "+", new Font("Arial", 8), Brushes.White, (widthofRec - 3) * grids, 18);
+            g.DrawString(Convert.ToString(currentValue) + "+", new Font("Arial", 8), Brushes.Black, (widthofRec - 3) * grids, 18);
         }
 
         private void emotionalPanelShow_CheckedChanged(object sender, EventArgs e)
@@ -120,55 +122,67 @@ namespace TWT
         {
             gMapControl.MapProvider = YandexMapProvider.Instance;
             GMaps.Instance.Mode = AccessMode.ServerOnly;
-            gMapControl.Position = new PointLatLng(53.684875692724994, 23.840167167130677);
+            gMapControl.Position = new PointLatLng(40.280177245114054, -97.83735244087555);
             gMapControl.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.ViewCenter;
-            gMapControl.MinZoom = 2;
+            gMapControl.MinZoom = 3;
             gMapControl.MaxZoom = 18;
-            gMapControl.Zoom = 4;
+            gMapControl.Zoom = 3;
             gMapControl.CanDragMap = true;
             gMapControl.DragButton = MouseButtons.Left;
-            LoadMap("");
+            LoadMap();
         }
 
-        private void LoadMap(string path)
+        private GMapOverlay paintTweets(List<State> states)
         {
+            GMapOverlay tweets = new GMapOverlay("tweetPoints");
+            foreach (var state in DB.states)
+            {
+                if (state.Postcode == "UNKNOWN" || state.Tweets.Count == 0)
+                    continue;
+                foreach (var tweet in state.Tweets)
+                {
+                    Bitmap tweetPoint = new Bitmap(20, 20);
+
+                    using (Graphics g = Graphics.FromImage(tweetPoint))
+                    {
+                        Pen pen = new Pen(Color.Black, 2f);
+                        g.DrawEllipse(pen, 0, 0, 7f, 7f);
+                        //g.DrawString(tweet.Emotionality.ToString(),new Font("Tahoma", 10, FontStyle.Regular) , new SolidBrush(Color.Black), 0,0);
+                        g.FillEllipse(new SolidBrush(Coloring.SetColors(tweet.Emotionality)), 0, 0, 7f, 7f);
+                    }
+                    Coordinates c = tweet.Coordinates;
+                    PointLatLng point = new PointLatLng(tweet.Coordinates.Longtitude, tweet.Coordinates.Latitude);
+                    GMapMarker GPoint = new GMarkerGoogle(point, tweetPoint);
+                    GPoint.ToolTip = new GMapRoundedToolTip(GPoint);
+                    GPoint.ToolTipText = tweet.Emotionality.ToString();
+                    GPoint.IsHitTestVisible = true;
+                    GPoint.ToolTipMode = MarkerTooltipMode.Never;
+                    tweets.Markers.Add(GPoint);
+
+                }
+            }
+            return tweets;
+        }
+
+        private void LoadMap()
+        {
+            Graphics g = gMapControl.CreateGraphics();
             GMapOverlay polygonOverlay = new GMapOverlay("polygonOverlay");
             gMapControl.PolygonsEnabled = true;
-            List<GMapPolygon> polygons = DB.GetStates(JsonParser.ParseStates());
+            //List<GMapPolygon> polygons = DB.GetPolygons();
+            List<GMapPolygon> polygons = DB.GetPaintedStates();
             foreach (var polygon in polygons)
-            {
+            {            
                 polygonOverlay.Polygons.Add(polygon);
             }
             gMapControl.Overlays.Add(polygonOverlay);
+            gMapControl.Overlays.Add(this.paintTweets(DB.states));
         }
 
-        //private List<GMapPolygon> paintStates(Dictionary<string, State> states)
-        //{
-        //    List<GMapPolygon> polygons = new List<GMapPolygon>();
-
-        //    foreach (var state in states.Values)
-        //    {
-        //        foreach (var polygons in state.Polygons)
-        //        {
-        //            foreach (var polygon in polygons)
-        //            {
-        //                List<PointLatLng> points = new List<PointLatLng>();
-        //                foreach (var point in polygon)
-        //                {
-        //                    PointLatLng pnt = new PointLatLng(point.Latitude, point.Longtitude);
-        //                    points.Add(pnt);
-        //                }
-        //                GMapPolygon plgn = new GMapPolygon(points, state.Postcode);
-        //                if (!float.IsNaN(state.Weight))
-        //                    plgn.Fill = new SolidBrush(Coloring.SetColors(item.Weight));
-        //                else plgn.Fill = new SolidBrush(Color.Gray);
-        //                plgn.Stroke = new Pen(Color.Black, 0.005F);
-        //                polys.Add(plgn);
-        //            }
-        //        }
-        //    }
-        //    return polygons;
-        //}
+        private void paintMap()
+        {
+           
+        }
 
         private void RefreshMap()
         {

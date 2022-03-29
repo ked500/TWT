@@ -13,7 +13,7 @@ namespace TWT.Business_Layer.Models
         private List<string> words = new List<string>();
         private Coordinates coordinates;
         private DateTime dateTime = new DateTime();
-        private double emotionality = 0;
+        private double emotionality = double.NaN;
 
 
         public List<string> Words 
@@ -65,24 +65,29 @@ namespace TWT.Business_Layer.Models
         public void Analyse(Dictionary<string, double> sentimentsWords)
         {
 
-            foreach (var word in Words)
+            int count = 0;
+            for (int index =0; index < Words.Count; index++)
             {
-
+                for (int index1 = 0; index1 != index; index1++)
+                {
+                    string word = string.Empty;
+                    for (int index2 = index1; index2!= index; index2++)
+                    {
+                        word += Words[index2];
+                        if(index2 + 1 != index) word += ' ';
+                    }
                     if (sentimentsWords.ContainsKey(word))
+                    {
+                        if (double.IsNaN(this.Emotionality)) this.Emotionality = 0;
                         this.Emotionality += sentimentsWords[word];
-               
+                        count++;
+                    }
+                   
+                }
+
             }
-
-            //foreach (var word in words)
-            //{
-            //    if (this.Words.Contains(word.Key))
-            //    {
-            //        if (!Emotionality.HasValue) Emotionality = 0;
-                    
-            //        Emotionality += word.Value;
-            //    }
-
-            //}
+            if(count != 0)
+                this.Emotionality = Math.Round((this.Emotionality / count), 2);
 
         }
 

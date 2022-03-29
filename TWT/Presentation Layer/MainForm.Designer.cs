@@ -70,7 +70,7 @@ namespace TWT
             this.gMapControl.GrayScaleMode = false;
             this.gMapControl.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.gMapControl.LevelsKeepInMemmory = 5;
-            this.gMapControl.Location = new System.Drawing.Point(514, 1);
+            this.gMapControl.Location = new System.Drawing.Point(146, 1);
             this.gMapControl.MarkersEnabled = true;
             this.gMapControl.MaxZoom = 2;
             this.gMapControl.MinZoom = 2;
@@ -84,7 +84,7 @@ namespace TWT
             this.gMapControl.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMapControl.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMapControl.ShowTileGridLines = false;
-            this.gMapControl.Size = new System.Drawing.Size(737, 540);
+            this.gMapControl.Size = new System.Drawing.Size(1105, 540);
             this.gMapControl.TabIndex = 1;
             this.gMapControl.Zoom = 0D;
             this.gMapControl.Load += new System.EventHandler(this.gMapControlLoad);
@@ -92,7 +92,7 @@ namespace TWT
             // emotionalPanelShow
             // 
             this.emotionalPanelShow.AutoSize = true;
-            this.emotionalPanelShow.Location = new System.Drawing.Point(13, 307);
+            this.emotionalPanelShow.Location = new System.Drawing.Point(13, 521);
             this.emotionalPanelShow.Name = "emotionalPanelShow";
             this.emotionalPanelShow.Size = new System.Drawing.Size(127, 17);
             this.emotionalPanelShow.TabIndex = 2;
@@ -102,8 +102,8 @@ namespace TWT
             // 
             // emotionalPanel
             // 
-            this.emotionalPanel.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.emotionalPanel.Location = new System.Drawing.Point(13, 348);
+            this.emotionalPanel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.emotionalPanel.Location = new System.Drawing.Point(146, 490);
             this.emotionalPanel.Name = "emotionalPanel";
             this.emotionalPanel.Size = new System.Drawing.Size(366, 51);
             this.emotionalPanel.TabIndex = 3;
