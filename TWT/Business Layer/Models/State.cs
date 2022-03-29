@@ -42,11 +42,16 @@ namespace TWT.Business_Layer.Models
             get
             {
                 double emotionality = 0;
+                int count = 0;
                 foreach (var tweet in Tweets)
                 {
-                    emotionality += tweet.Emotionality;
+                    if (!double.IsNaN(tweet.Emotionality))
+                    {
+                        emotionality += tweet.Emotionality;
+                        count++;
+                    }
                 }
-                return emotionality;
+                return emotionality / count;
             }
         }
         public State()

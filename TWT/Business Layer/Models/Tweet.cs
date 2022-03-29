@@ -13,7 +13,7 @@ namespace TWT.Business_Layer.Models
         private List<string> words = new List<string>();
         private Coordinates coordinates;
         private DateTime dateTime = new DateTime();
-        private double emotionality = 0;
+        private double emotionality = double.NaN;
 
 
         public List<string> Words 
@@ -64,6 +64,7 @@ namespace TWT.Business_Layer.Models
         //MUST BE CALLED FOR EVERY TWEET AFTER PARSING THE FILES (IN THE DB)
         public void Analyse(Dictionary<string, double> sentimentsWords)
         {
+
             int count = 0;
             for (int index =0; index < Words.Count; index++)
             {
@@ -77,6 +78,7 @@ namespace TWT.Business_Layer.Models
                     }
                     if (sentimentsWords.ContainsKey(word))
                     {
+                        if (double.IsNaN(this.Emotionality)) this.Emotionality = 0;
                         this.Emotionality += sentimentsWords[word];
                         count++;
                     }
