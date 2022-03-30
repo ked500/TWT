@@ -11,16 +11,17 @@ namespace TWT.Business_Layer.Models
     public class Tweet
     {
         private List<string> words = new List<string>();
+        private string message;
         private Coordinates coordinates;
         private DateTime dateTime = new DateTime();
         private double emotionality = double.NaN;
 
 
-        public List<string> Words 
-        { 
-            get { return words; }
-            private set { words = value; } 
-        }
+        public string Message
+        {
+            get { return message; }
+            set { message = value; }
+        } 
         public Coordinates Coordinates
         {
             get { return coordinates; }
@@ -43,6 +44,7 @@ namespace TWT.Business_Layer.Models
 
         public Tweet(string XCord, string YCord, string DateTime, string Message)
         {
+            this.Message = Message;
             Message = Regex.Replace(Message, @"(http:\/\/\S+\/?\w*)|([@#]\w+)", "");
                 
             string[] phrases = Message.Split(',', '.', '?', '!', ':', ';', '"', '=', '+', '(', ')');
@@ -51,7 +53,7 @@ namespace TWT.Business_Layer.Models
                 string[] words = phrase.Split(' ');
                 foreach (var word in words)
                 {
-                    if(word!= "")this.Words.Add(word.Trim().ToLower());
+                    if(word!= "")this.words.Add(word.Trim().ToLower());
                 }
             }
             this.DateTime = Convert.ToDateTime(DateTime);
@@ -66,14 +68,14 @@ namespace TWT.Business_Layer.Models
         {
 
             int count = 0;
-            for (int index =0; index < Words.Count; index++)
+            for (int index =0; index < words.Count; index++)
             {
                 for (int index1 = 0; index1 != index; index1++)
                 {
                     string word = string.Empty;
                     for (int index2 = index1; index2!= index; index2++)
                     {
-                        word += Words[index2];
+                        word += words[index2];
                         if(index2 + 1 != index) word += ' ';
                     }
                     if (sentimentsWords.ContainsKey(word))
