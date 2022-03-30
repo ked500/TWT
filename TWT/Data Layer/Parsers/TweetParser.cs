@@ -8,12 +8,12 @@ using TWT.Business_Layer.Models;
 
 namespace TWT.Data_Layer.Parsers
 {
-    class TxtParser
+    public class TweetParser
     {
-        public static List<Tweet> ParseTweets(string path)
+        public static List<Tweet> Parse(string tweetsFileName)
         {
             List<Tweet> tweets = new List<Tweet>();
-            string[] file = File.ReadAllLines(path);
+            string[] file = File.ReadAllLines(FilesManager.GetTweetFullPath(tweetsFileName));
             foreach (var line in file)
             {
                 Tweet tweet = GetParsedTweet(line);

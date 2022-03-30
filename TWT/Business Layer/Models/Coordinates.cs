@@ -10,7 +10,7 @@ namespace TWT.Business_Layer.Models
     {
 
         private double latitude;
-        private double longtitude { get; set; }
+        private double longtitude;
         public double Latitude
         {
             get { return latitude; }

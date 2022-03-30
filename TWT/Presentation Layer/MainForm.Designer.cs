@@ -29,38 +29,17 @@ namespace TWT
         /// </summary>
         private void InitializeComponent()
         {
-            this.chooseFileButton = new System.Windows.Forms.Button();
-            this.chooseFileList = new System.Windows.Forms.ListView();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.gMapControl = new GMap.NET.WindowsForms.GMapControl();
             this.emotionalPanelShow = new System.Windows.Forms.CheckBox();
             this.emotionalPanel = new System.Windows.Forms.Panel();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tweetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // chooseFileButton
-            // 
-            this.chooseFileButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chooseFileButton.Location = new System.Drawing.Point(13, 29);
-            this.chooseFileButton.Name = "chooseFileButton";
-            this.chooseFileButton.Size = new System.Drawing.Size(116, 33);
-            this.chooseFileButton.TabIndex = 0;
-            this.chooseFileButton.Text = "Choose File";
-            this.chooseFileButton.UseVisualStyleBackColor = true;
-            this.chooseFileButton.Click += new System.EventHandler(this.choseFileButton_Click);
-            // 
-            // chooseFileList
-            // 
-            this.chooseFileList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.chooseFileList.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chooseFileList.HideSelection = false;
-            this.chooseFileList.Location = new System.Drawing.Point(2, 68);
-            this.chooseFileList.MultiSelect = false;
-            this.chooseFileList.Name = "chooseFileList";
-            this.chooseFileList.Size = new System.Drawing.Size(138, 212);
-            this.chooseFileList.TabIndex = 1;
-            this.chooseFileList.UseCompatibleStateImageBehavior = false;
-            this.chooseFileList.View = System.Windows.Forms.View.List;
-            this.chooseFileList.SelectedIndexChanged += new System.EventHandler(this.ChooseFileListChangeIndex);
-            this.chooseFileList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ChooseFileLIstClick);
             // 
             // gMapControl
             // 
@@ -70,7 +49,8 @@ namespace TWT
             this.gMapControl.GrayScaleMode = false;
             this.gMapControl.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.gMapControl.LevelsKeepInMemmory = 5;
-            this.gMapControl.Location = new System.Drawing.Point(146, 1);
+            this.gMapControl.Location = new System.Drawing.Point(0, 1);
+            this.gMapControl.Margin = new System.Windows.Forms.Padding(4);
             this.gMapControl.MarkersEnabled = true;
             this.gMapControl.MaxZoom = 2;
             this.gMapControl.MinZoom = 2;
@@ -84,17 +64,19 @@ namespace TWT
             this.gMapControl.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMapControl.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMapControl.ShowTileGridLines = false;
-            this.gMapControl.Size = new System.Drawing.Size(1105, 540);
+            this.gMapControl.Size = new System.Drawing.Size(1668, 665);
             this.gMapControl.TabIndex = 1;
             this.gMapControl.Zoom = 0D;
+            this.gMapControl.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gMapControl_OnMarkerClick);
             this.gMapControl.Load += new System.EventHandler(this.gMapControlLoad);
             // 
             // emotionalPanelShow
             // 
             this.emotionalPanelShow.AutoSize = true;
-            this.emotionalPanelShow.Location = new System.Drawing.Point(13, 521);
+            this.emotionalPanelShow.Location = new System.Drawing.Point(17, 641);
+            this.emotionalPanelShow.Margin = new System.Windows.Forms.Padding(4);
             this.emotionalPanelShow.Name = "emotionalPanelShow";
-            this.emotionalPanelShow.Size = new System.Drawing.Size(127, 17);
+            this.emotionalPanelShow.Size = new System.Drawing.Size(165, 21);
             this.emotionalPanelShow.TabIndex = 2;
             this.emotionalPanelShow.Text = "Hide Emotional Panel";
             this.emotionalPanelShow.UseVisualStyleBackColor = true;
@@ -103,38 +85,72 @@ namespace TWT
             // emotionalPanel
             // 
             this.emotionalPanel.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.emotionalPanel.Location = new System.Drawing.Point(146, 490);
+            this.emotionalPanel.Location = new System.Drawing.Point(195, 603);
+            this.emotionalPanel.Margin = new System.Windows.Forms.Padding(4);
             this.emotionalPanel.Name = "emotionalPanel";
-            this.emotionalPanel.Size = new System.Drawing.Size(366, 51);
+            this.emotionalPanel.Size = new System.Drawing.Size(488, 63);
             this.emotionalPanel.TabIndex = 3;
             this.emotionalPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.emotionalPanelPaint);
             // 
+            // menuStrip
+            // 
+            this.menuStrip.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(1667, 36);
+            this.menuStrip.TabIndex = 5;
+            this.menuStrip.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tweetsToolStripMenuItem});
+            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.fileToolStripMenuItem.Image = global::TWT.Properties.Resources.cpu_1280x720;
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(80, 32);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // tweetsToolStripMenuItem
+            // 
+            this.tweetsToolStripMenuItem.Font = new System.Drawing.Font("Comic Sans MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tweetsToolStripMenuItem.Name = "tweetsToolStripMenuItem";
+            this.tweetsToolStripMenuItem.Size = new System.Drawing.Size(224, 28);
+            this.tweetsToolStripMenuItem.Text = "Choose tweets";
+            this.tweetsToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tweetsToolStripMenuItem_DropDownItemClicked);
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1250, 542);
+            this.ClientSize = new System.Drawing.Size(1667, 667);
+            this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.emotionalPanel);
             this.Controls.Add(this.emotionalPanelShow);
             this.Controls.Add(this.gMapControl);
-            this.Controls.Add(this.chooseFileList);
-            this.Controls.Add(this.chooseFileButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
-            this.ShowIcon = false;
-            this.Text = "Form1";
+            this.Text = "Twitter trends";
             this.Load += new System.EventHandler(this.FormLoad);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button chooseFileButton;
-        private System.Windows.Forms.ListView chooseFileList;
         private GMap.NET.WindowsForms.GMapControl gMapControl;
         private System.Windows.Forms.CheckBox emotionalPanelShow;
         private System.Windows.Forms.Panel emotionalPanel;
+        private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tweetsToolStripMenuItem;
     }
 }
 

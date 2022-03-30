@@ -12,138 +12,69 @@ using TWT.Data_Layer.Parsers;
 
 namespace TWT.Data_Layer
 {
-    internal class DB
+    public class DB
     {
-        static Dictionary<string, double> wordValues;
-        public static List<State> states;
-        public static List<Tweet> tweets;
 
-        static public List<GMapPolygon> GetPolygons()
-        {         
-            List<GMapPolygon> polygons = new List<GMapPolygon>();
-            foreach (var state in states)
-            {
-                foreach (var polygon in state.Polygons)
-                {
-                    List<PointLatLng> vertexes = new List<PointLatLng>();
-                    foreach (var vertex in polygon.Vertexes)
-                    {
-                        PointLatLng vert = new PointLatLng(vertex.Latitude, vertex.Longtitude);
-                        vertexes.Add(vert);
-                    }
-                    GMapPolygon pol = new GMapPolygon(vertexes, state.Postcode);
-                    if (!double.IsNaN(state.Emotionality))
-                        pol.Fill = new SolidBrush(Coloring.SetColors(state.Emotionality));
-                    else
-                        pol.Fill = new SolidBrush(Color.Gray);
-                    pol.Stroke = new Pen(Color.Black, 0.005f);
-                    polygons.Add(pol);
-                }
-            }
-            return polygons;
-        }
+        private static DB instance;
 
-        //TEST ONLY
-        private static void ParseStates()
+        private Dictionary<string, double> sentiments;
+        private List<State> states;
+        
+        private List<Tweet> unknownTweets = new List<Tweet>();
+        
+        private List<Tweet> tweets;
+
+
+        public List<State> States
         {
-            states = JsonParser.ParseStates();
+            private set { states = value; }
+            get { return states; }
         }
 
-        private static void ParseSentiments()
+        public List<Tweet> Tweets
         {
-            wordValues = SentimentsParser.Parse(@"..\..\Data Layer\Data Files\sentiments.csv");
+            private set { tweets = value; }
+            get { return tweets; }
         }
 
-        private static void ParseTweet(string path)
+        public List<Tweet> UnknownTweets
         {
-            ParseSentiments();
-            tweets = TxtParser.ParseTweets(path);
-            foreach (var item in tweets)
-            {
-                item.Analyse(wordValues);
-            }
+            get { return unknownTweets; }
         }
 
-        //@"..\..\Data Layer\Data Files\cali_tweets2014.txt"
-
-        static Dictionary<string, State> ConvertStates()
+        public Dictionary<string, double> Sentiments
         {
-            Dictionary<string, State> statesDic = new Dictionary<string, State>();
-            foreach (var item in states)
-            {
-                statesDic.Add(item.Postcode, item);
-            }
-            return statesDic;
+            private set { sentiments = value; }
+            get { return sentiments; }
         }
-
-        static private void countStates(string tweetsFileName)
+        private DB()
         {
-            ParseStates();
-            Dictionary<string, State> newStates = ConvertStates();         
-            ParseTweet($@"..\..\Data Layer\Data Files\{tweetsFileName}");
-            List<State> statesToColor = states;
-            foreach (var tweet in tweets)
-            {
-               
-                State state = AnalyseStates(statesToColor, tweet);
-                if(!newStates.ContainsKey(state.Postcode))
-                {
-                    state.AddTweet(tweet);
-                    newStates.Add(state.Postcode, state);
-                }
-                else
-                {
-                    State newState = newStates[state.Postcode];
-                    newStates.Remove(state.Postcode);
-                    newState.AddTweet(tweet);
-                    newStates.Add(newState.Postcode, newState);
-                }
-            }
-            states = new List<State>(newStates.Values);
+            //EXCEPTION
+            
+            this.States = StateParser.Parse();
+            
+            //EXCEPTION
+            this.Sentiments = SentimentsParser.Parse();
         }
 
-        static private State AnalyseStates(List<State> states,Tweet tweet)
+
+        public static DB GetInstance()
         {
-            State stateToReturn = new State();
-            stateToReturn.Postcode = "UNKNOWN";
-            foreach (var state in states)
-            {
-                foreach (var polygon in state.Polygons)
-                {
-
-                    if (state.isInside(tweet.Coordinates, polygon.Vertexes))
-                    {
-                        return state;
-                    }
-                }
-            }
-            return stateToReturn;
+            if (instance == null) instance = new DB();
+            return instance;
         }
-
-        static public List<GMapPolygon> GetPaintedStates(string tweetsFileName)
+        
+        public void ReadTweets(string tweetFileName)
         {
-            countStates(tweetsFileName);
-            List<GMapPolygon> polygons = new List<GMapPolygon>();
-            foreach (var state in states)
-            {
-                foreach (var polygon in state.Polygons)
-                {
-                    List<PointLatLng> vertexes = new List<PointLatLng>();
-                    foreach (var vertex in polygon.Vertexes)
-                    {
-                        PointLatLng vert = new PointLatLng(vertex.Latitude, vertex.Longtitude);
-                        vertexes.Add(vert);
-                    }
-                    GMapPolygon pol = new GMapPolygon(vertexes, state.Postcode);
-                     if (!double.IsNaN(state.Emotionality))
-                        pol.Fill = new SolidBrush(Coloring.SetColors(state.Emotionality));
-                    else
-                        pol.Fill = new SolidBrush(Color.Gray);
-                    pol.Stroke = new Pen(Color.Black, 0.005f);
-                    polygons.Add(pol);
-                }
-            }
-            return polygons;
+            //EXCEPTION
+            this.tweets = TweetParser.Parse(tweetFileName);
         }
+
+
+ 
+
+
+       
+
     }
 }

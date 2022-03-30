@@ -9,11 +9,11 @@ namespace TWT.Data_Layer.Parsers
 {
     public class SentimentsParser
     {
-        public static Dictionary<string, double> Parse(string path)
+        public static Dictionary<string, double> Parse()
         {
             Dictionary<string, double> words = new Dictionary<string, double>();
 
-            StreamReader reader = new StreamReader(path);
+            StreamReader reader = new StreamReader(FilesManager.GetSentimnetsFullPath());
             string[] lines = reader.ReadToEnd().Split('\n');
 
             foreach (var line in lines)
