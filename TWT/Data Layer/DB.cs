@@ -76,11 +76,11 @@ namespace TWT.Data_Layer
             return statesDic;
         }
 
-        static private void countStates()
+        static private void countStates(string tweetsFileName)
         {
             ParseStates();
             Dictionary<string, State> newStates = ConvertStates();         
-            ParseTweet(@"..\..\Data Layer\Data Files\cali_tweets2014.txt");
+            ParseTweet($@"..\..\Data Layer\Data Files\{tweetsFileName}");
             List<State> statesToColor = states;
             foreach (var tweet in tweets)
             {
@@ -120,9 +120,9 @@ namespace TWT.Data_Layer
             return stateToReturn;
         }
 
-        static public List<GMapPolygon> GetPaintedStates()
+        static public List<GMapPolygon> GetPaintedStates(string tweetsFileName)
         {
-            countStates();
+            countStates(tweetsFileName);
             List<GMapPolygon> polygons = new List<GMapPolygon>();
             foreach (var state in states)
             {

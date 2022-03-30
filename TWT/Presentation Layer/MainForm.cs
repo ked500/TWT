@@ -50,11 +50,13 @@ namespace TWT
         private void ChooseFileLIstClick(object sender, MouseEventArgs e)
         {
             string path = chooseFileList.SelectedItems[0].Text.ToString() + ".txt";
+            LoadMap(); 
+
         }
 
         private void ChooseFileListChangeIndex(object sender, EventArgs e)
         {
-
+           
         }
 
         //Emotional Panel
@@ -120,7 +122,7 @@ namespace TWT
 
         private void gMapControlLoad(object sender, EventArgs e)
         {
-            gMapControl.MapProvider = YandexMapProvider.Instance;
+            //gMapControl.MapProvider = YandexMapProvider.Instance;
             GMaps.Instance.Mode = AccessMode.ServerOnly;
             gMapControl.Position = new PointLatLng(40.280177245114054, -97.83735244087555);
             gMapControl.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.ViewCenter;
@@ -129,7 +131,6 @@ namespace TWT
             gMapControl.Zoom = 3;
             gMapControl.CanDragMap = true;
             gMapControl.DragButton = MouseButtons.Left;
-            LoadMap();
         }
 
         private GMapOverlay paintTweets(List<State> states)
@@ -170,11 +171,12 @@ namespace TWT
             GMapOverlay polygonOverlay = new GMapOverlay("polygonOverlay");
             gMapControl.PolygonsEnabled = true;
             //List<GMapPolygon> polygons = DB.GetPolygons();
-            List<GMapPolygon> polygons = DB.GetPaintedStates();
+            List<GMapPolygon> polygons = DB.GetPaintedStates(this.chooseFileList.SelectedItems[0].Text + ".txt");
             foreach (var polygon in polygons)
             {            
                 polygonOverlay.Polygons.Add(polygon);
             }
+            this.gMapControl.Overlays.Clear();
             gMapControl.Overlays.Add(polygonOverlay);
             gMapControl.Overlays.Add(this.paintTweets(DB.states));
         }
