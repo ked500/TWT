@@ -15,9 +15,9 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.ToolTips;
 using GMap.NET.WindowsForms.Markers;
 
-using TWT.Data_Layer.Parsers;
+
 using TWT.Business_Layer.Models;
-using TWT.Business_Layer;
+using TWT.Business_Layer.Business_Analyzers;
 using TWT.Data_Layer;
 
 namespace TWT
@@ -29,9 +29,16 @@ namespace TWT
         private GMapOverlay stateOverlay = new GMapOverlay("stateOverlay");
 
 
-
+        //Accessors to business layer
         private Painter painter = new Painter();
+        private Analyzer analyzer = new Analyzer();
+
+
+        //Current Tweets on the map
         private string currentTweetFileName = string.Empty;
+
+        //Initial Coordinates of map
+        private Coordinates coordinates = new Coordinates(-97.83735244087555, 40.280177245114054);
         public MainForm()
         {
             InitializeComponent();
@@ -97,7 +104,7 @@ namespace TWT
         {
             //gMapControl.MapProvider = YandexMapProvider.Instance;
             GMaps.Instance.Mode = AccessMode.ServerOnly;
-            gMapControl.Position = new PointLatLng(40.280177245114054, -97.83735244087555);
+            gMapControl.Position = new PointLatLng(coordinates.Latitude, coordinates.Longtitude);
             gMapControl.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.ViewCenter;
             gMapControl.MinZoom = 3;
             gMapControl.MaxZoom = 18;
@@ -133,7 +140,6 @@ namespace TWT
 
         private void RefreshMap()
         {
-            double curZoom = gMapControl.Zoom;
             gMapControl.Zoom += 0.001;
             gMapControl.Zoom -= 0.001;
         }
@@ -148,7 +154,7 @@ namespace TWT
         private void tweetsToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             this.currentTweetFileName = e.ClickedItem.Text;
-            DB.GetInstance().Update(this.currentTweetFileName);
+            this.analyzer.Update(this.currentTweetFileName);
             LoadMap();
         }
     }

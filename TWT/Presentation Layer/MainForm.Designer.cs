@@ -118,7 +118,7 @@ namespace TWT
             // 
             this.tweetsToolStripMenuItem.Font = new System.Drawing.Font("Comic Sans MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tweetsToolStripMenuItem.Name = "tweetsToolStripMenuItem";
-            this.tweetsToolStripMenuItem.Size = new System.Drawing.Size(215, 28);
+            this.tweetsToolStripMenuItem.Size = new System.Drawing.Size(224, 28);
             this.tweetsToolStripMenuItem.Text = "Choose tweets";
             this.tweetsToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tweetsToolStripMenuItem_DropDownItemClicked);
             // 
