@@ -11,14 +11,12 @@ using TWT.Business_Layer.Models;
 
 namespace TWT.Data_Layer.Parsers
 {
-    public class JsonParser
+    public class StateParser
     {
-        static string path = @"..\..\Data Layer\Data Files\states.json";
-
-        public static List<State> ParseStates()
+        public static List<State> Parse()
         {
 
-            string jsonString = new StreamReader(path).ReadToEnd();
+            string jsonString = new StreamReader(FilesManager.GetStatesFullPath()).ReadToEnd();
             JObject jsonStates = JObject.Parse(jsonString);
 
 
