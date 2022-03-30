@@ -80,14 +80,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business Layer\Business Analyzers\Analyzer.cs" />
+    <Compile Include="Business Layer\BusinessObject.cs" />
     <Compile Include="Business Layer\Models\Coordinates.cs" />
     <Compile Include="Business Layer\Models\Polygon.cs" />
     <Compile Include="Business Layer\Models\State.cs" />
     <Compile Include="Business Layer\Models\Tweet.cs" />
+    <Compile Include="Business Layer\Business Analyzers\Painter.cs" />
+    <Compile Include="Data Layer\DAO\SentimentsDAO.cs" />
+    <Compile Include="Data Layer\DAO\TweetDAO.cs" />
+    <Compile Include="Data Layer\FilesManager.cs" />
     <Compile Include="Data Layer\DB.cs" />
-    <Compile Include="Data Layer\Parsers\JsonParser.cs" />
+    <Compile Include="Data Layer\Parsers\StateParser.cs" />
     <Compile Include="Data Layer\Parsers\SentimentsParser.cs" />
-    <Compile Include="Data Layer\Parsers\TxtParser.cs" />
+    <Compile Include="Data Layer\Parsers\TweetParser.cs" />
+    <Compile Include="Data Layer\DAO\StateDAO.cs" />
     <Compile Include="Presentation Layer\Coloring.cs" />
     <Compile Include="Presentation Layer\MainForm.cs">
       <SubType>Form</SubType>
@@ -108,9 +115,10 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Data Layer\Data Files\sentiments.csv" />
-    <None Include="Data Layer\Data Files\states.json" />
+    <None Include="Data Layer\Data Files\Sentiments\sentiments.csv" />
+    <None Include="Data Layer\Data Files\States\states.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -127,15 +135,16 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Data Layer\Data Files\cali_tweets2014.txt" />
-    <Content Include="Data Layer\Data Files\family_tweets2014.txt" />
-    <Content Include="Data Layer\Data Files\football_tweets2014.txt" />
-    <Content Include="Data Layer\Data Files\high_school_tweets2014.txt" />
-    <Content Include="Data Layer\Data Files\movie_tweets2014.txt" />
-    <Content Include="Data Layer\Data Files\shopping_tweets2014.txt" />
-    <Content Include="Data Layer\Data Files\snow_tweets2014.txt" />
-    <Content Include="Data Layer\Data Files\texas_tweets2014.txt" />
-    <Content Include="Data Layer\Data Files\weekend_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\Tweets\cali_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\Tweets\family_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\Tweets\football_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\Tweets\high_school_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\Tweets\movie_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\Tweets\shopping_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\Tweets\snow_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\Tweets\texas_tweets2014.txt" />
+    <Content Include="Data Layer\Data Files\Tweets\weekend_tweets2014.txt" />
+    <None Include="Resources\cpu-1280x720.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
