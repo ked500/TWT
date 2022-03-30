@@ -12,138 +12,163 @@ using TWT.Data_Layer.Parsers;
 
 namespace TWT.Data_Layer
 {
-    internal class DB
+    public class DB
     {
-        static Dictionary<string, double> wordValues;
-        public static List<State> states;
-        public static List<Tweet> tweets;
 
-        static public List<GMapPolygon> GetPolygons()
-        {         
-            List<GMapPolygon> polygons = new List<GMapPolygon>();
+        private static DB instance;
+
+        private Dictionary<string, double> sentiments;
+        private List<State> states;
+        
+        private List<Tweet> unknownTweets = new List<Tweet>();
+        
+        private List<Tweet> tweets;
+
+
+        public List<State> States
+        {
+            get { return states; }
+            set { states = value; }
+        }
+
+
+
+        private DB()
+        {
+            this.States = StateParser.Parse();
+            this.sentiments = SentimentsParser.Parse();
+        }
+
+
+        public static DB GetInstance()
+        {
+            if (instance == null) instance = new DB();
+            return instance;
+        }
+        
+        private void ReadTweets(string tweetFileName)
+        {
+            this.tweets = TweetParser.Parse(tweetFileName);
+            foreach (var tweet in tweets)
+            {
+                tweet.Analyse(this.sentiments);
+            }
+        }
+
+
+        public bool IsUnknown(Tweet Tweet)
+        {
+            return this.unknownTweets.Any((x) => x == Tweet);
+        }
+        private void RefreshStates()
+        {
+            States.ForEach((x) => x.Tweets.Clear());
+        }
+
+        private bool SetState(Tweet tweet)
+        {
             foreach (var state in states)
             {
-                foreach (var polygon in state.Polygons)
-                {
-                    List<PointLatLng> vertexes = new List<PointLatLng>();
-                    foreach (var vertex in polygon.Vertexes)
-                    {
-                        PointLatLng vert = new PointLatLng(vertex.Latitude, vertex.Longtitude);
-                        vertexes.Add(vert);
-                    }
-                    GMapPolygon pol = new GMapPolygon(vertexes, state.Postcode);
-                    if (!double.IsNaN(state.Emotionality))
-                        pol.Fill = new SolidBrush(Coloring.SetColors(state.Emotionality));
-                    else
-                        pol.Fill = new SolidBrush(Color.Gray);
-                    pol.Stroke = new Pen(Color.Black, 0.005f);
-                    polygons.Add(pol);
-                }
+               if (state.isInside(tweet))
+               {
+                    state.Tweets.Add(tweet);
+                    return true;
+               }
             }
-            return polygons;
+            
+            return false;
+        }
+
+        public void Update(string tweetFileName)
+        {
+            RefreshStates();
+            ReadTweets(tweetFileName);
+            this.unknownTweets.Clear();
+            foreach (var tweet in tweets)
+            {
+                if (!SetState(tweet))
+                    unknownTweets.Add(tweet);
+            }
+
         }
 
         //TEST ONLY
-        private static void ParseStates()
-        {
-            states = JsonParser.ParseStates();
-        }
+        //private static void ParseStates()
+        //{
+        //    states = StateParser.ParseStates();
+        //}
 
-        private static void ParseSentiments()
-        {
-            wordValues = SentimentsParser.Parse(@"..\..\Data Layer\Data Files\sentiments.csv");
-        }
+        //private static void ParseSentiments()
+        //{
+        //    sentiments = SentimentsParser.Parse(@"..\..\Data Layer\Data Files\sentiments.csv");
+        //}
 
-        private static void ParseTweet(string path)
-        {
-            ParseSentiments();
-            tweets = TxtParser.ParseTweets(path);
-            foreach (var item in tweets)
-            {
-                item.Analyse(wordValues);
-            }
-        }
+        //private static void ParseTweet(string path)
+        //{
+        //    ParseSentiments();
+        //    tweets = TweetParser.ParseTweets(path);
+        //    foreach (var item in tweets)
+        //    {
+        //        item.Analyse(sentiments);
+        //    }
+        //}
 
         //@"..\..\Data Layer\Data Files\cali_tweets2014.txt"
 
-        static Dictionary<string, State> ConvertStates()
-        {
-            Dictionary<string, State> statesDic = new Dictionary<string, State>();
-            foreach (var item in states)
-            {
-                statesDic.Add(item.Postcode, item);
-            }
-            return statesDic;
-        }
+        //static Dictionary<string, State> ConvertStates()
+        //{
+        //    Dictionary<string, State> statesDic = new Dictionary<string, State>();
+        //    foreach (var item in states)
+        //    {
+        //        statesDic.Add(item.Postcode, item);
+        //    }
+        //    return statesDic;
+        //}
 
-        static private void countStates(string tweetsFileName)
-        {
-            ParseStates();
-            Dictionary<string, State> newStates = ConvertStates();         
-            ParseTweet($@"..\..\Data Layer\Data Files\{tweetsFileName}");
-            List<State> statesToColor = states;
-            foreach (var tweet in tweets)
-            {
-               
-                State state = AnalyseStates(statesToColor, tweet);
-                if(!newStates.ContainsKey(state.Postcode))
-                {
-                    state.AddTweet(tweet);
-                    newStates.Add(state.Postcode, state);
-                }
-                else
-                {
-                    State newState = newStates[state.Postcode];
-                    newStates.Remove(state.Postcode);
-                    newState.AddTweet(tweet);
-                    newStates.Add(newState.Postcode, newState);
-                }
-            }
-            states = new List<State>(newStates.Values);
-        }
+        //static private void countStates(string tweetsFileName)
+        //{
+        //    ParseStates();
+        //    Dictionary<string, State> newStates = ConvertStates();         
+        //    ParseTweet($@"..\..\Data Layer\Data Files\{tweetsFileName}");
+        //    List<State> statesToColor = states;
+        //    foreach (var tweet in tweets)
+        //    {
 
-        static private State AnalyseStates(List<State> states,Tweet tweet)
-        {
-            State stateToReturn = new State();
-            stateToReturn.Postcode = "UNKNOWN";
-            foreach (var state in states)
-            {
-                foreach (var polygon in state.Polygons)
-                {
+        //        State state = AnalyseStates(statesToColor, tweet);
+        //        if(!newStates.ContainsKey(state.Postcode))
+        //        {
+        //            state.AddTweet(tweet);
+        //            newStates.Add(state.Postcode, state);
+        //        }
+        //        else
+        //        {
+        //            State newState = newStates[state.Postcode];
+        //            newStates.Remove(state.Postcode);
+        //            newState.AddTweet(tweet);
+        //            newStates.Add(newState.Postcode, newState);
+        //        }
+        //    }
+        //    states = new List<State>(newStates.Values);
+        //}
 
-                    if (state.isInside(tweet.Coordinates, polygon.Vertexes))
-                    {
-                        return state;
-                    }
-                }
-            }
-            return stateToReturn;
-        }
+        //static private State AnalyseStates(List<State> states,Tweet tweet)
+        //{
+        //    State stateToReturn = new State();
+        //    stateToReturn.Postcode = "UNKNOWN";
+        //    foreach (var state in states)
+        //    {
+        //        foreach (var polygon in state.Polygons)
+        //        {
 
-        static public List<GMapPolygon> GetPaintedStates(string tweetsFileName)
-        {
-            countStates(tweetsFileName);
-            List<GMapPolygon> polygons = new List<GMapPolygon>();
-            foreach (var state in states)
-            {
-                foreach (var polygon in state.Polygons)
-                {
-                    List<PointLatLng> vertexes = new List<PointLatLng>();
-                    foreach (var vertex in polygon.Vertexes)
-                    {
-                        PointLatLng vert = new PointLatLng(vertex.Latitude, vertex.Longtitude);
-                        vertexes.Add(vert);
-                    }
-                    GMapPolygon pol = new GMapPolygon(vertexes, state.Postcode);
-                     if (!double.IsNaN(state.Emotionality))
-                        pol.Fill = new SolidBrush(Coloring.SetColors(state.Emotionality));
-                    else
-                        pol.Fill = new SolidBrush(Color.Gray);
-                    pol.Stroke = new Pen(Color.Black, 0.005f);
-                    polygons.Add(pol);
-                }
-            }
-            return polygons;
-        }
+        //            if (state.isInside(tweet.Coordinates, polygon.Vertexes))
+        //            {
+        //                return state;
+        //            }
+        //        }
+        //    }
+        //    return stateToReturn;
+        //}
+
+
     }
 }
