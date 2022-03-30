@@ -17,46 +17,34 @@ using GMap.NET.WindowsForms.Markers;
 
 using TWT.Data_Layer.Parsers;
 using TWT.Business_Layer.Models;
+using TWT.Business_Layer;
 using TWT.Data_Layer;
 
 namespace TWT
 {
     public partial class MainForm : Form
     {
+
+        //OVERLAYS
+        private GMapOverlay stateOverlay = new GMapOverlay("stateOverlay");
+
+
+
+        private Painter painter = new Painter();
+        private string currentTweetFileName = string.Empty;
         public MainForm()
         {
             InitializeComponent();
-            chooseFileList.Visible = false;
         }
-
-        //Choose File Button
-        private void choseFileButton_Click(object sender, EventArgs e)
+        private void FormLoad(object sender, EventArgs e)
         {
-            if (!chooseFileList.Visible)
+            gMapControl.ShowCenter = false;
+            foreach (var item in FilesManager.GetTweetFiles())
             {
-                chooseFileList.Visible = true;
-                chooseFileList.Items.Clear();
-                Directory.GetFiles(@"..\..\Data Layer\Data Files", "*.txt").ToList().ForEach(x =>
-                chooseFileList.Items.Add(Path.GetFileNameWithoutExtension(x)));
+                tweetsToolStripMenuItem.DropDownItems.Add(item);
             }
-            else
-            {
-                chooseFileList.Visible = false;
-                return;
-            }
-        }
 
-        //File List
-        private void ChooseFileLIstClick(object sender, MouseEventArgs e)
-        {
-            string path = chooseFileList.SelectedItems[0].Text.ToString() + ".txt";
-            LoadMap(); 
 
-        }
-
-        private void ChooseFileListChangeIndex(object sender, EventArgs e)
-        {
-           
         }
 
         //Emotional Panel
@@ -64,15 +52,6 @@ namespace TWT
         {
             DrawPanel();
         }
-
-        private void TestForStrings(string path)
-        {
-            //Delete in release
-            Graphics g = emotionalPanel.CreateGraphics();
-            g.Clear(Color.Green);
-            g.DrawString(path, new Font("HelvLight", 10), Brushes.White, (emotionalPanel.Width + 36) / 4, 0);
-        }
-
 
         private void DrawPanel()
         {
@@ -108,17 +87,11 @@ namespace TWT
         private void emotionalPanelShow_CheckedChanged(object sender, EventArgs e)
         {
             //Hiding Emotional Panel
-            if (emotionalPanel.Visible)
-                emotionalPanel.Visible = false;
-            else
-                emotionalPanel.Visible = true;
+            emotionalPanel.Visible = !emotionalPanel.Visible;
         }
 
         //GMap
-        private void FormLoad(object sender, EventArgs e)
-        {
-            gMapControl.ShowCenter = false;
-        }
+       
 
         private void gMapControlLoad(object sender, EventArgs e)
         {
@@ -128,69 +101,55 @@ namespace TWT
             gMapControl.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.ViewCenter;
             gMapControl.MinZoom = 3;
             gMapControl.MaxZoom = 18;
+            gMapControl.PolygonsEnabled = true;
             gMapControl.Zoom = 3;
             gMapControl.CanDragMap = true;
             gMapControl.DragButton = MouseButtons.Left;
+            gMapControl.Overlays.Add(stateOverlay);
+
         }
 
-        private GMapOverlay paintTweets(List<State> states)
-        {
-            GMapOverlay tweets = new GMapOverlay("tweetPoints");
-            foreach (var state in DB.states)
-            {
-                if (state.Postcode == "UNKNOWN" || state.Tweets.Count == 0)
-                    continue;
-                foreach (var tweet in state.Tweets)
-                {
-                    Bitmap tweetPoint = new Bitmap(20, 20);
 
-                    using (Graphics g = Graphics.FromImage(tweetPoint))
-                    {
-                        Pen pen = new Pen(Color.Black, 2f);
-                        g.DrawEllipse(pen, 0, 0, 7f, 7f);
-                        //g.DrawString(tweet.Emotionality.ToString(),new Font("Tahoma", 10, FontStyle.Regular) , new SolidBrush(Color.Black), 0,0);
-                        g.FillEllipse(new SolidBrush(Coloring.SetColors(tweet.Emotionality)), 0, 0, 7f, 7f);
-                    }
-                    Coordinates c = tweet.Coordinates;
-                    PointLatLng point = new PointLatLng(tweet.Coordinates.Longtitude, tweet.Coordinates.Latitude);
-                    GMapMarker GPoint = new GMarkerGoogle(point, tweetPoint);
-                    GPoint.ToolTip = new GMapRoundedToolTip(GPoint);
-                    GPoint.ToolTipText = tweet.Emotionality.ToString();
-                    GPoint.IsHitTestVisible = true;
-                    GPoint.ToolTipMode = MarkerTooltipMode.Never;
-                    tweets.Markers.Add(GPoint);
-
-                }
-            }
-            return tweets;
-        }
+        
 
         private void LoadMap()
         {
-            Graphics g = gMapControl.CreateGraphics();
-            GMapOverlay polygonOverlay = new GMapOverlay("polygonOverlay");
-            gMapControl.PolygonsEnabled = true;
-            //List<GMapPolygon> polygons = DB.GetPolygons();
-            List<GMapPolygon> polygons = DB.GetPaintedStates(this.chooseFileList.SelectedItems[0].Text + ".txt");
-            foreach (var polygon in polygons)
-            {            
-                polygonOverlay.Polygons.Add(polygon);
-            }
-            this.gMapControl.Overlays.Clear();
-            gMapControl.Overlays.Add(polygonOverlay);
-            gMapControl.Overlays.Add(this.paintTweets(DB.states));
-        }
+            this.stateOverlay.Polygons.Clear();
+            this.stateOverlay.Markers.Clear();
 
-        private void paintMap()
-        {
+            foreach (var polygon in painter.GetPolygons())
+            {
+                stateOverlay.Polygons.Add(polygon);
+            }
+            foreach (var tweet in painter.GetTweets())
+            {
+                stateOverlay.Markers.Add(tweet);
+            }
+
+            RefreshMap();
            
         }
+
 
         private void RefreshMap()
         {
             double curZoom = gMapControl.Zoom;
             gMapControl.Zoom += 0.001;
             gMapControl.Zoom -= 0.001;
+        }
+
+
+
+        private void gMapControl_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        {
+            toolTip.SetToolTip(gMapControl, item.ToolTipText);
+        }
+
+        private void tweetsToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            this.currentTweetFileName = e.ClickedItem.Text;
+            DB.GetInstance().Update(this.currentTweetFileName);
+            LoadMap();
         }
     }
 }
